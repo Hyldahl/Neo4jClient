@@ -38,7 +38,7 @@ namespace Neo4jClient.ApiModels
         /// <summary>
         /// Returns a structured representation of the Neo4j server version, but only with partial data.
         /// The version type (milestone, preview, release candidate, stable) is not taken in to account,
-        /// so both 1.9.M01, 1.9.RC1 and 1.9.1 will all return 1.9.0.1.
+        /// so both 1.9.M01, 1.9-M01, 1.9.0-M01, 1.9.RC1 and 1.9.1 will all return 1.9.0.1.
         /// </summary>
         [JsonIgnore]
         public Version Version
@@ -50,8 +50,8 @@ namespace Neo4jClient.ApiModels
 
                 var numericalVersionString = Regex.Replace(
                     neo4j_version,
-                    @"(?<major>\d*)[.](?<minor>\d*)[.]?(M(?<build>\d*)|RC(?<build>\d*)?).*",
-                    "${major}.${minor}.0.${build}");
+                    @"(?:^|\s)(?<major>\d*)[.](?<minor>\d*)(?:[.](?<build>\d*))?[.\-]?(M(?<revision>\d*)|RC(?<revision>\d*)?).*",
+                    "${major}.${minor}.0${build}.0${revision}");
 
                 numericalVersionString = Regex.Replace(
                     numericalVersionString,
